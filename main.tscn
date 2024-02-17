@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://blnetwluptlbr"]
+[gd_scene load_steps=8 format=3 uid="uid://blnetwluptlbr"]
 
 [ext_resource type="Script" path="res://Discoball.cs" id="1_fal5q"]
 [ext_resource type="Texture2D" uid="uid://b66reivatjbaa" path="res://assets/circle.png" id="1_jr8cc"]
 [ext_resource type="Texture2D" uid="uid://do32t6sdekrco" path="res://assets/drag_anchor.png" id="3_380as"]
 [ext_resource type="Script" path="res://DragAnchor.cs" id="4_38bf6"]
+[ext_resource type="Texture2D" uid="uid://cjfcd1koh86x1" path="res://assets/resize_anchor.png" id="5_patkm"]
 [ext_resource type="Script" path="res://BottomResize.cs" id="5_reonl"]
 [ext_resource type="Script" path="res://RightResize.cs" id="5_wwmb3"]
 
@@ -29,16 +30,23 @@ mouse_default_cursor_shape = 6
 texture = ExtResource("3_380as")
 script = ExtResource("4_38bf6")
 
-[node name="BottomResize" type="HSeparator" parent="UI"]
-offset_left = -176.0
-offset_top = 160.0
-offset_right = 176.0
-offset_bottom = 176.0
-script = ExtResource("5_reonl")
-
-[node name="RightResize" type="VSeparator" parent="UI"]
-offset_left = 168.0
-offset_top = -176.0
-offset_right = 172.0
-offset_bottom = 176.0
+[node name="RightResize" type="TextureRect" parent="UI"]
+modulate = Color(0, 0, 0, 1)
+offset_left = 128.0
+offset_top = -24.0
+offset_right = 178.0
+offset_bottom = 26.0
+mouse_default_cursor_shape = 10
+texture = ExtResource("5_patkm")
 script = ExtResource("5_wwmb3")
+
+[node name="BottomResize" type="TextureRect" parent="UI"]
+modulate = Color(0, 0, 0, 1)
+offset_left = 24.0
+offset_top = 120.0
+offset_right = 74.0
+offset_bottom = 170.0
+rotation = 1.5708
+mouse_default_cursor_shape = 9
+texture = ExtResource("5_patkm")
+script = ExtResource("5_reonl")
