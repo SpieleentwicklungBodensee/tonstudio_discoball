@@ -1,13 +1,27 @@
-[gd_scene load_steps=2 format=3 uid="uid://blnetwluptlbr"]
+[gd_scene load_steps=5 format=3 uid="uid://blnetwluptlbr"]
 
+[ext_resource type="Script" path="res://Discoball.cs" id="1_fal5q"]
 [ext_resource type="Texture2D" uid="uid://b66reivatjbaa" path="res://assets/circle.png" id="1_jr8cc"]
+[ext_resource type="Texture2D" uid="uid://do32t6sdekrco" path="res://assets/drag_anchor.png" id="3_380as"]
+[ext_resource type="Script" path="res://DragAnchor.cs" id="4_38bf6"]
 
 [node name="App" type="Node2D"]
+script = ExtResource("1_fal5q")
 
 [node name="Circle" type="Sprite2D" parent="."]
-position = Vector2(176, 176)
 texture = ExtResource("1_jr8cc")
 
 [node name="Camera2D" type="Camera2D" parent="."]
-scale = Vector2(0.953139, 0.994467)
-anchor_mode = 0
+position = Vector2(-1.52588e-05, -1.52588e-05)
+scale = Vector2(2, 2)
+
+[node name="UI" type="CanvasLayer" parent="."]
+follow_viewport_enabled = true
+
+[node name="DragAnchor" type="TextureRect" parent="UI"]
+offset_left = -264.0
+offset_top = -256.0
+offset_right = -224.0
+offset_bottom = -216.0
+texture = ExtResource("3_380as")
+script = ExtResource("4_38bf6")
