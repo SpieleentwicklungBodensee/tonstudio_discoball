@@ -23,5 +23,6 @@ offset_left = -264.0
 offset_top = -256.0
 offset_right = -224.0
 offset_bottom = -216.0
+mouse_default_cursor_shape = 6
 texture = ExtResource("3_380as")
 script = ExtResource("4_38bf6")
