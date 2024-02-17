@@ -3,11 +3,11 @@ using Godot;
 
 namespace TonstudioDiscoball;
 
-public partial class DragAnchor : Control {
+public partial class BottomResize : Control {
+    private const int MinHeight = 80;
 
     private bool _hasMouseFocus;
     private bool _dragging;
-    private Vector2 _dragPoint;
 
     public override void _Ready() {
         MouseEntered += () => {
@@ -17,30 +17,29 @@ public partial class DragAnchor : Control {
         };
         MouseExited += () => { _hasMouseFocus = false; };
     }
-    
+
     public override void _Input(InputEvent ev) {
         if (ev.IsActionPressed("LeftClick") && _hasMouseFocus)
             StartDrag();
         else if (ev.IsActionReleased("LeftClick"))
             StopDrag();
-        else if (_dragging && ev is InputEventMouseMotion) {
-            UpdateWindowPosition();
-        }
+        else if (_dragging && ev is InputEventMouseMotion mouseMotion) 
+            UpdateWindowSize(mouseMotion);
     }
-    
+
     private void StartDrag() {
-        _dragPoint = GetGlobalMousePosition();
         _dragging = true;
     }
-    
+
     private void StopDrag() {
         _dragging = false;
-        _dragPoint = default;
     }
-    
-    private void UpdateWindowPosition() {
-        var positionChange = GetGlobalMousePosition() - _dragPoint;
-        var newPosition = GetViewport().GetWindow().Position + new Vector2I((int)positionChange.X, (int)positionChange.Y);
-        DisplayServer.WindowSetPosition(newPosition);
+
+    private void UpdateWindowSize(InputEventMouseMotion mouseMotion) {
+        var window = GetViewport().GetWindow();
+        var windowScale = window.Size.Y / (float)window.ContentScaleSize.Y;
+        var positionChange = mouseMotion.Relative * windowScale;
+        var newSize = new Vector2I(window.Size.X, Math.Max(MinHeight, (int)positionChange.Y + window.Size.Y));
+        DisplayServer.WindowSetSize(newSize);
     }
 }
