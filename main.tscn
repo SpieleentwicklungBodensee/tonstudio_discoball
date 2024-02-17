@@ -5,4 +5,9 @@
 [node name="App" type="Node2D"]
 
 [node name="Circle" type="Sprite2D" parent="."]
+position = Vector2(176, 176)
 texture = ExtResource("1_jr8cc")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+scale = Vector2(0.953139, 0.994467)
+anchor_mode = 0
