@@ -13,16 +13,16 @@ texture = ExtResource("1_jr8cc")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(-1.52588e-05, -1.52588e-05)
-scale = Vector2(2, 2)
 
 [node name="UI" type="CanvasLayer" parent="."]
 follow_viewport_enabled = true
 
 [node name="DragAnchor" type="TextureRect" parent="UI"]
-offset_left = -264.0
-offset_top = -256.0
-offset_right = -224.0
-offset_bottom = -216.0
+modulate = Color(0, 0, 0, 1)
+offset_left = -24.0
+offset_top = -24.0
+offset_right = 26.0
+offset_bottom = 26.0
 mouse_default_cursor_shape = 6
 texture = ExtResource("3_380as")
 script = ExtResource("4_38bf6")
