@@ -5,8 +5,6 @@ namespace TonstudioDiscoball;
 
 public partial class RightResize : Control {
     
-    private const int MinWidth = 80;
-
     private bool _hasMouseFocus;
     private bool _dragging;
 
@@ -40,7 +38,7 @@ public partial class RightResize : Control {
         var window = GetViewport().GetWindow();
         var windowScale = window.Size.X / (float)window.ContentScaleSize.X;
         var positionChange = mouseMotion.Relative * windowScale;
-        var newSize = new Vector2I(Math.Max(MinWidth, (int)positionChange.X + window.Size.X), window.Size.Y);
+        var newSize = new Vector2I(Math.Max(DiagResize.MinWidth, (int)positionChange.X + window.Size.X), window.Size.Y);
         DisplayServer.WindowSetSize(newSize);
     }
 }

@@ -4,7 +4,6 @@ using Godot;
 namespace TonstudioDiscoball;
 
 public partial class BottomResize : Control {
-    private const int MinHeight = 80;
 
     private bool _hasMouseFocus;
     private bool _dragging;
@@ -39,7 +38,7 @@ public partial class BottomResize : Control {
         var window = GetViewport().GetWindow();
         var windowScale = window.Size.Y / (float)window.ContentScaleSize.Y;
         var positionChange = mouseMotion.Relative * windowScale;
-        var newSize = new Vector2I(window.Size.X, Math.Max(MinHeight, (int)positionChange.Y + window.Size.Y));
+        var newSize = new Vector2I(window.Size.X, Math.Max(DiagResize.MinHeight, (int)positionChange.Y + window.Size.Y));
         DisplayServer.WindowSetSize(newSize);
     }
 }

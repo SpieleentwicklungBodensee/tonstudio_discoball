@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://blnetwluptlbr"]
+[gd_scene load_steps=9 format=3 uid="uid://blnetwluptlbr"]
 
 [ext_resource type="Script" path="res://Discoball.cs" id="1_fal5q"]
 [ext_resource type="Texture2D" uid="uid://b66reivatjbaa" path="res://assets/circle.png" id="1_jr8cc"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://cjfcd1koh86x1" path="res://assets/resize_anchor.png" id="5_patkm"]
 [ext_resource type="Script" path="res://BottomResize.cs" id="5_reonl"]
 [ext_resource type="Script" path="res://RightResize.cs" id="5_wwmb3"]
+[ext_resource type="Script" path="res://DiagResize.cs" id="8_3nmsr"]
 
 [node name="App" type="Node2D"]
 script = ExtResource("1_fal5q")
@@ -50,3 +51,14 @@ rotation = 1.5708
 mouse_default_cursor_shape = 9
 texture = ExtResource("5_patkm")
 script = ExtResource("5_reonl")
+
+[node name="DiagResize" type="TextureRect" parent="UI"]
+modulate = Color(0, 0, 0, 1)
+offset_left = 112.0
+offset_top = 72.0
+offset_right = 162.0
+offset_bottom = 122.0
+rotation = 0.785398
+mouse_default_cursor_shape = 12
+texture = ExtResource("5_patkm")
+script = ExtResource("8_3nmsr")
