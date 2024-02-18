@@ -24,11 +24,9 @@ public partial class Discoball : Node {
         if (_totalDelta < TickRateInSeconds) return;
 
         _totalDelta = 0;
-        _circle.Modulate = new Color(RandomBrightColor(), RandomBrightColor(), RandomBrightColor());
-    }
-
-    private float RandomBrightColor() {
-        return _random.NextSingle() / 2 + .5f;
+        var randomAbovePoint5 = _random.NextSingle() / 2 + .5f;
+        var color = Color.FromHsv(_random.NextSingle(), randomAbovePoint5, 1);
+        _circle.Modulate = color;
     }
 
     public override void _Input(InputEvent ev) {
