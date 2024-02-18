@@ -14,8 +14,9 @@ texture = ExtResource("1_jr8cc")
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(-1.52588e-05, -1.52588e-05)
 
-[node name="ResizeAndMoveControl" type="Node" parent="."]
+[node name="ResizeAndMoveControl" type="Node" parent="." node_paths=PackedStringArray("_saveSystem")]
 script = ExtResource("3_l22hy")
+_saveSystem = NodePath("../SaveSystem")
 
 [node name="SaveSystem" type="Node" parent="."]
 script = ExtResource("4_etn2d")

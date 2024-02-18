@@ -5,17 +5,13 @@ namespace TonstudioDiscoball;
 
 public partial class SaveSystem : Node {
 
-    private const string SaveFile = "user://dicso_cdonfig.tres";
+    private const string SaveFile = "user://disco_config.tres";
 
-    public override void _Input(InputEvent ev) {
-        if (ev.IsActionPressed("Save")) {
-            Save();
-        } else if (ev.IsActionPressed("Load")) {
-            Load();
-        }
+    public override void _Ready() {
+        Load();
     }
 
-    private void Save() {
+    public void Save() {
         var config = new DiscoConfig();
         config.WindowPosition = GetWindow().Position;
         config.WindowSize = GetWindow().Size;
