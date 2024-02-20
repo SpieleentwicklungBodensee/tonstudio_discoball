@@ -7,6 +7,12 @@ public partial class ResizeAndMoveControl : Node {
 
     [Export] private SaveSystem _saveSystem;
 
+    public override void _Input(InputEvent ev) {
+        if (ev.IsActionPressed("ResetPosition")) {
+            _saveSystem.LoadDefaults();
+        }
+    }
+
     public override void _Process(double delta) {
         if (Input.IsActionPressed("xIncrease")) {
             var window = GetWindow();
