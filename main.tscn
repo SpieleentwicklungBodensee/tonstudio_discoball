@@ -1,10 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://blnetwluptlbr"]
+[gd_scene load_steps=8 format=3 uid="uid://blnetwluptlbr"]
 
 [ext_resource type="Script" path="res://Discoball.cs" id="1_fal5q"]
 [ext_resource type="Texture2D" uid="uid://b66reivatjbaa" path="res://assets/circle.png" id="1_jr8cc"]
 [ext_resource type="Script" path="res://ResizeAndMoveControl.cs" id="3_l22hy"]
 [ext_resource type="Script" path="res://SaveSystem.cs" id="4_etn2d"]
 [ext_resource type="Script" path="res://AudioInput.cs" id="5_3rwwe"]
+[ext_resource type="Script" path="res://AudioInputSelect.cs" id="6_rpg3d"]
 
 [sub_resource type="AudioStreamMicrophone" id="AudioStreamMicrophone_le4qi"]
 
@@ -32,3 +33,13 @@ script = ExtResource("5_3rwwe")
 
 [node name="UI" type="CanvasLayer" parent="."]
 follow_viewport_enabled = true
+
+[node name="V" type="VBoxContainer" parent="UI"]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="AudioInputSelect" type="OptionButton" parent="UI/V"]
+layout_mode = 2
+script = ExtResource("6_rpg3d")
+
+[connection signal="item_selected" from="UI/V/AudioInputSelect" to="UI/V/AudioInputSelect" method="_OnItemSelected"]
