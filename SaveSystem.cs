@@ -1,4 +1,6 @@
 using System;
+using System.Diagnostics;
+using System.Linq;
 using Godot;
 
 namespace TonstudioDiscoball;
@@ -11,37 +13,51 @@ public partial class SaveSystem : Node {
         Load();
     }
 
-    public void Save() {
+    public void SaveWindowPosition() {
         var window = GetWindow();
-        var config = new DiscoConfig();
+        var config = DiscoConfig.CurrentConfig;
+        
         config.WindowPosition = window.Position;
         config.WindowSize = window.Size;
         config.Screen = window.CurrentScreen;
 
-        Console.WriteLine(config);
-        ResourceSaver.Save(config, SaveFile);
+        Save();
     }
 
-    public void LoadDefaults() {
-        var defaultConfig = new DiscoConfig();
-        defaultConfig.WindowPosition = DisplayServer.ScreenGetSize() / 2;
-        ApplyConfig(defaultConfig);
+    public void ResetWindowPosition() {
+        DiscoConfig.CurrentConfig.ResetWindowPosition();
+        ApplyCurrentConfig();
+        Save();
+    }
+
+    public void Save() {
+        Trace.TraceInformation($"Saving config: {DiscoConfig.CurrentConfig}");
+        ResourceSaver.Save(DiscoConfig.CurrentConfig, SaveFile);
     }
 
     private void Load() {
         var config = ResourceLoader.Load<DiscoConfig>(SaveFile);
         if (config != null) {
-            ApplyConfig(config);
+            DiscoConfig.CurrentConfig = config;
+            ApplyCurrentConfig();
         } else {
-            LoadDefaults();
+            DiscoConfig.CurrentConfig = new DiscoConfig();
+            ApplyCurrentConfig();
         }
     }
 
-    private void ApplyConfig(DiscoConfig config) {
+    private void ApplyCurrentConfig() {
+        var config = DiscoConfig.CurrentConfig;
         var window = GetWindow();
         window.CurrentScreen = config.Screen;
         window.Position = config.WindowPosition;
         window.Size = config.WindowSize;
+
+        if (!AudioServer.GetInputDeviceList().Contains(config.AudioDevice)) {
+            Trace.TraceError($"Audio Input Device missing: {config.AudioDevice}, resetting to 'Default'");
+            config.AudioDevice = "Default";
+        }
+        AudioServer.InputDevice = config.AudioDevice;
     }
 
 }

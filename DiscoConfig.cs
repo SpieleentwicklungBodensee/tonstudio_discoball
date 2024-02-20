@@ -5,12 +5,24 @@ namespace TonstudioDiscoball;
 
 [GlobalClass]
 public partial class DiscoConfig : Resource {
-    
-    [Export] public Vector2I WindowPosition;
-    [Export] public Vector2I WindowSize = new (353, 353);
+
+    public static DiscoConfig CurrentConfig;
+
+    [Export] public Vector2I WindowPosition = DisplayServer.ScreenGetSize() / 2;
+    [Export] public Vector2I WindowSize = new(353, 353);
     [Export] public int Screen;
 
+    [Export] public string AudioDevice = "Default";
+
     public override string ToString() {
-        return $"DiscoConfig: Window {WindowSize.X}x{WindowSize.Y} @{WindowPosition} on Screen {Screen}";
+        return
+            $"DiscoConfig: Window {WindowSize.X}x{WindowSize.Y} @{WindowPosition} on Screen {Screen}; Selected AudioDevice: {AudioDevice}";
+    }
+
+    public void ResetWindowPosition() {
+        var defaults = new DiscoConfig();
+        WindowPosition = defaults.WindowPosition;
+        WindowSize = defaults.WindowSize;
+        Screen = defaults.Screen;
     }
 }

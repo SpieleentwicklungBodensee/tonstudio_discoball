@@ -12,6 +12,9 @@
 [node name="App" type="Node2D"]
 script = ExtResource("1_fal5q")
 
+[node name="SaveSystem" type="Node" parent="."]
+script = ExtResource("4_etn2d")
+
 [node name="Circle" type="Sprite2D" parent="."]
 texture = ExtResource("1_jr8cc")
 
@@ -21,9 +24,6 @@ position = Vector2(-1.52588e-05, -1.52588e-05)
 [node name="ResizeAndMoveControl" type="Node" parent="." node_paths=PackedStringArray("_saveSystem")]
 script = ExtResource("3_l22hy")
 _saveSystem = NodePath("../SaveSystem")
-
-[node name="SaveSystem" type="Node" parent="."]
-script = ExtResource("4_etn2d")
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = SubResource("AudioStreamMicrophone_le4qi")
@@ -38,8 +38,9 @@ follow_viewport_enabled = true
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="AudioInputSelect" type="OptionButton" parent="UI/V"]
+[node name="AudioInputSelect" type="OptionButton" parent="UI/V" node_paths=PackedStringArray("_saveSystem")]
 layout_mode = 2
 script = ExtResource("6_rpg3d")
+_saveSystem = NodePath("../../../SaveSystem")
 
 [connection signal="item_selected" from="UI/V/AudioInputSelect" to="UI/V/AudioInputSelect" method="_OnItemSelected"]

@@ -5,6 +5,8 @@ namespace TonstudioDiscoball;
 
 public partial class AudioInputSelect : OptionButton {
     
+    [Export] private SaveSystem _saveSystem;
+    
     private string[] _inputDevices;
 
     public override void _Ready() {
@@ -20,8 +22,10 @@ public partial class AudioInputSelect : OptionButton {
     }
 
     private void _OnItemSelected(long index) {
-        AudioServer.InputDevice = _inputDevices[index];
-        // TODO save to config
+        var selectedInputDevice = _inputDevices[index];
+        AudioServer.InputDevice = selectedInputDevice;
+        DiscoConfig.CurrentConfig.AudioDevice = selectedInputDevice;
+        _saveSystem.Save();
     }
 
 }
