@@ -12,9 +12,12 @@ public partial class SaveSystem : Node {
     }
 
     public void Save() {
+        var window = GetWindow();
         var config = new DiscoConfig();
-        config.WindowPosition = GetWindow().Position;
-        config.WindowSize = GetWindow().Size;
+        config.WindowPosition = window.Position;
+        config.WindowSize = window.Size;
+        config.Screen = window.CurrentScreen;
+        
         ResourceSaver.Save(config, SaveFile);
     }
 
@@ -22,7 +25,9 @@ public partial class SaveSystem : Node {
         var config = ResourceLoader.Load<DiscoConfig>(SaveFile);
         if (config == null) return;
 
-        GetWindow().Position = config.WindowPosition;
-        GetWindow().Size = config.WindowSize;
+        var window = GetWindow();
+        window.CurrentScreen = config.Screen;
+        window.Position = config.WindowPosition;
+        window.Size = config.WindowSize;
     }
 }
