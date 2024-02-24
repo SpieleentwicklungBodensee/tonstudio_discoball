@@ -52,12 +52,6 @@ public partial class SaveSystem : Node {
         window.CurrentScreen = config.Screen;
         window.Position = config.WindowPosition;
         window.Size = config.WindowSize;
-
-        if (!AudioServer.GetInputDeviceList().Contains(config.AudioDevice)) {
-            Trace.TraceError($"Audio Input Device missing: {config.AudioDevice}, resetting to 'Default'");
-            config.AudioDevice = "Default";
-        }
-        AudioServer.InputDevice = config.AudioDevice;
     }
 
 }

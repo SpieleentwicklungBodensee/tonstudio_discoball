@@ -12,11 +12,9 @@ public partial class DiscoConfig : Resource {
     [Export] public Vector2I WindowSize = new(353, 353);
     [Export] public int Screen;
 
-    [Export] public string AudioDevice = "Default";
-
     public override string ToString() {
         return
-            $"DiscoConfig: Window {WindowSize.X}x{WindowSize.Y} @{WindowPosition} on Screen {Screen}; Selected AudioDevice: {AudioDevice}";
+            $"DiscoConfig: Window {WindowSize.X}x{WindowSize.Y} @{WindowPosition} on Screen {Screen}";
     }
 
     public void ResetWindowPosition() {
