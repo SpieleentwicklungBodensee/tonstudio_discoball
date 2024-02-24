@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://blnetwluptlbr"]
+[gd_scene load_steps=6 format=3 uid="uid://blnetwluptlbr"]
 
 [ext_resource type="Script" path="res://Discoball.cs" id="1_fal5q"]
 [ext_resource type="Texture2D" uid="uid://b66reivatjbaa" path="res://assets/circle.png" id="1_jr8cc"]
 [ext_resource type="Script" path="res://ResizeAndMoveControl.cs" id="3_l22hy"]
 [ext_resource type="Script" path="res://SaveSystem.cs" id="4_etn2d"]
+[ext_resource type="Script" path="res://BpmSelector.cs" id="5_8jo58"]
 
 [node name="App" type="Node2D"]
 script = ExtResource("1_fal5q")
@@ -27,3 +28,18 @@ follow_viewport_enabled = true
 [node name="V" type="VBoxContainer" parent="UI"]
 offset_right = 40.0
 offset_bottom = 40.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/V"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UI/V/HBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "BPM"
+
+[node name="BpmSelector" type="SpinBox" parent="UI/V/HBoxContainer"]
+layout_mode = 2
+max_value = 480.0
+script = ExtResource("5_8jo58")
+
+[connection signal="value_changed" from="UI/V/HBoxContainer/BpmSelector" to="UI/V/HBoxContainer/BpmSelector" method="_OnValueChanged"]

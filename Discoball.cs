@@ -10,7 +10,6 @@ public partial class Discoball : Node {
     private Sprite2D _circle;
     private bool _uiMode = true;
     private double _totalDelta;
-    private const double TickRateInSeconds = 1;
 
     public override void _Ready() {
         GetViewport().TransparentBg = true;
@@ -21,9 +20,11 @@ public partial class Discoball : Node {
     public override void _PhysicsProcess(double delta) {
         if (_uiMode) return;
         _totalDelta += delta;
-        if (_totalDelta < TickRateInSeconds) return;
+        var targetDelta = 60.0 / DiscoConfig.CurrentConfig.Bpm;
+        Console.WriteLine(targetDelta);
+        if (_totalDelta < targetDelta) return;
 
-        _totalDelta = 0;
+        _totalDelta -= targetDelta;
         var randomAbovePoint5 = _random.NextSingle() / 2 + .5f;
         var color = Color.FromHsv(_random.NextSingle(), randomAbovePoint5, 1);
         _circle.Modulate = color;

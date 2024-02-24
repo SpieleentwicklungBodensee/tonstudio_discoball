@@ -30,7 +30,7 @@ public partial class SaveSystem : Node {
         Save();
     }
 
-    public void Save() {
+    public static void Save() {
         Trace.TraceInformation($"Saving config: {DiscoConfig.CurrentConfig}");
         ResourceSaver.Save(DiscoConfig.CurrentConfig, SaveFile);
     }
