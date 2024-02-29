@@ -50,8 +50,8 @@ public partial class SaveSystem : Node {
         var config = DiscoConfig.CurrentConfig;
         var window = GetWindow();
         window.CurrentScreen = config.Screen;
-        window.Position = config.WindowPosition;
         window.Size = config.WindowSize;
+        window.Position = config.WindowPosition;
     }
 
 }
