@@ -13,10 +13,11 @@ public partial class DiscoConfig : Resource {
     [Export] public int Screen;
     
     [Export] public int Bpm = 120;
+    [Export] public double AnimationDuration = .8;
+    [Export] public int BarHeight = 25;
 
     public override string ToString() {
-        return
-            $"DiscoConfig: Window {WindowSize.X}x{WindowSize.Y} @{WindowPosition} on Screen {Screen}";
+        return $"DiscoConfig: Window {WindowSize.X}x{WindowSize.Y} @{WindowPosition} on Screen {Screen}";
     }
 
     public void ResetWindowPosition() {

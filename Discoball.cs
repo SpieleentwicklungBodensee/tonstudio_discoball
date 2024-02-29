@@ -7,6 +7,7 @@ public partial class Discoball : Node {
 
     private CanvasLayer _ui;
     private Sprite2D _circle;
+    private DiscoShape _rect;
     private AnimationPlayer _animation;
     private ConfigWindow _configWindow;
     
@@ -17,6 +18,7 @@ public partial class Discoball : Node {
         GetViewport().TransparentBg = true;
         _ui = GetNode<CanvasLayer>("UI");
         _circle = GetNode<Sprite2D>("Circle");
+        _rect = GetNode<DiscoShape>("Circle/Rect");
         _animation = GetNode<AnimationPlayer>("AnimationPlayer");
         _configWindow = GetNode<ConfigWindow>("ConfigWindow");
         _configWindow.Visible = true;
@@ -31,8 +33,18 @@ public partial class Discoball : Node {
         if (_totalDelta < targetDelta) return;
 
         _totalDelta -= targetDelta;
-        // _animation.Play("ColorChange");
-        _animation.Play("PulseDown");
+        PlayAnimation();
+    }
+
+    private void PlayAnimation() {
+        _rect.Position = Vector2.Zero;
+        _rect.SetRandomColor();
+        var circleHeight = _circle.Texture.GetHeight();
+        var rectHeight = circleHeight / 100.0f * DiscoConfig.CurrentConfig.BarHeight;
+        _rect.Scale = new Vector2(_rect.Scale.X, rectHeight);
+        var rectOffset = circleHeight/2.0f + rectHeight/2.0f;
+        _rect.Position = new Vector2(_rect.Position.X, -rectOffset);
+        CreateTween().TweenProperty(_rect, "position:y", rectOffset, DiscoConfig.CurrentConfig.AnimationDuration);
     }
 
     public override void _Input(InputEvent ev) {
