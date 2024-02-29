@@ -6,9 +6,9 @@
 [ext_resource type="Texture2D" uid="uid://dcx37mwlem2aw" path="res://assets/rect.png" id="4_0quic"]
 [ext_resource type="Script" path="res://SaveSystem.cs" id="4_etn2d"]
 [ext_resource type="Script" path="res://DiscoShape.cs" id="4_mnefn"]
-[ext_resource type="Script" path="res://BpmSelector.cs" id="5_8jo58"]
 [ext_resource type="Texture2D" uid="uid://do32t6sdekrco" path="res://assets/drag_anchor.png" id="6_ayom1"]
 [ext_resource type="Script" path="res://DragAnchor.cs" id="7_ng4sq"]
+[ext_resource type="PackedScene" uid="uid://g5hj1vnp3yvq" path="res://ConfigWindow.tscn" id="9_3t28f"]
 
 [sub_resource type="Animation" id="Animation_bk3rn"]
 resource_name = "ColorChange"
@@ -109,25 +109,6 @@ speed_scale = 2.0
 [node name="UI" type="CanvasLayer" parent="."]
 follow_viewport_enabled = true
 
-[node name="V" type="VBoxContainer" parent="UI"]
-offset_left = -40.0
-offset_top = 32.0
-offset_right = 83.0
-offset_bottom = 72.0
-
-[node name="H" type="HBoxContainer" parent="UI/V"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="UI/V/H"]
-layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-text = "BPM"
-
-[node name="BpmSelector" type="SpinBox" parent="UI/V/H"]
-layout_mode = 2
-max_value = 480.0
-script = ExtResource("5_8jo58")
-
 [node name="DragAnchor" type="TextureRect" parent="UI" node_paths=PackedStringArray("_saveSystem")]
 modulate = Color(0, 0, 0, 1)
 offset_left = -24.0
@@ -138,4 +119,6 @@ texture = ExtResource("6_ayom1")
 script = ExtResource("7_ng4sq")
 _saveSystem = NodePath("../../SaveSystem")
 
-[connection signal="value_changed" from="UI/V/H/BpmSelector" to="UI/V/H/BpmSelector" method="_OnValueChanged"]
+[node name="ConfigWindow" parent="." instance=ExtResource("9_3t28f")]
+initial_position = 1
+visible = false

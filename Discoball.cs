@@ -8,6 +8,8 @@ public partial class Discoball : Node {
     private CanvasLayer _ui;
     private Sprite2D _circle;
     private AnimationPlayer _animation;
+    private ConfigWindow _configWindow;
+    
     private bool _uiMode = true;
     private double _totalDelta;
 
@@ -16,6 +18,10 @@ public partial class Discoball : Node {
         _ui = GetNode<CanvasLayer>("UI");
         _circle = GetNode<Sprite2D>("Circle");
         _animation = GetNode<AnimationPlayer>("AnimationPlayer");
+        _configWindow = GetNode<ConfigWindow>("ConfigWindow");
+        _configWindow.Visible = true;
+        _configWindow.MoveToForeground();
+        _configWindow.GrabFocus();
     }
 
     public override void _PhysicsProcess(double delta) {
@@ -40,6 +46,7 @@ public partial class Discoball : Node {
                 _animation.Stop();
                 _circle.SelfModulate = Colors.White;
                 _totalDelta = 0;
+                _configWindow.Show();
             } else {
                 _circle.SelfModulate = Colors.Black;
             }

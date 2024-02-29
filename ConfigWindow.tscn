@@ -1,0 +1,32 @@
+[gd_scene load_steps=3 format=3 uid="uid://g5hj1vnp3yvq"]
+
+[ext_resource type="Script" path="res://ConfigWindow.cs" id="1_l3xyh"]
+[ext_resource type="Script" path="res://BpmSelector.cs" id="2_q1p1b"]
+
+[node name="ConfigWindow" type="Window"]
+title = "Discoball Config"
+size = Vector2i(400, 100)
+wrap_controls = true
+transient = true
+script = ExtResource("1_l3xyh")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="V" type="VBoxContainer" parent="CanvasLayer"]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="H" type="HBoxContainer" parent="CanvasLayer/V"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/V/H"]
+layout_mode = 2
+text = "BPM"
+
+[node name="BpmSelector" type="SpinBox" parent="CanvasLayer/V/H"]
+layout_mode = 2
+max_value = 480.0
+script = ExtResource("2_q1p1b")
+
+[connection signal="close_requested" from="." to="." method="_OnCloseRequested"]
+[connection signal="value_changed" from="CanvasLayer/V/H/BpmSelector" to="CanvasLayer/V/H/BpmSelector" method="_OnValueChanged"]
