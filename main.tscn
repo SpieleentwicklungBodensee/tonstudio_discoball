@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://blnetwluptlbr"]
+[gd_scene load_steps=11 format=3 uid="uid://blnetwluptlbr"]
 
 [ext_resource type="Script" path="res://Discoball.cs" id="1_fal5q"]
 [ext_resource type="Texture2D" uid="uid://b66reivatjbaa" path="res://assets/circle.png" id="1_jr8cc"]
@@ -10,8 +10,13 @@
 [ext_resource type="Script" path="res://DragAnchor.cs" id="7_ng4sq"]
 [ext_resource type="PackedScene" uid="uid://g5hj1vnp3yvq" path="res://ConfigWindow.tscn" id="9_3t28f"]
 
+[sub_resource type="Curve" id="Curve_7bx2p"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.5, 0.5), 3.42186, 3.42186, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 3
+
 [node name="App" type="Node2D"]
 script = ExtResource("1_fal5q")
+_curve = SubResource("Curve_7bx2p")
 
 [node name="SaveSystem" type="Node" parent="."]
 script = ExtResource("4_etn2d")
