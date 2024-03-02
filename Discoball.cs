@@ -6,12 +6,12 @@ namespace TonstudioDiscoball;
 public partial class Discoball : Node {
 
     [Export] private Curve _curve;
-    
+
     private CanvasLayer _ui;
     private Sprite2D _circle;
     private DiscoShape _rect;
     private ConfigWindow _configWindow;
-    
+
     private bool _uiMode = true;
     private double _totalDelta;
     private float _rectOffset;
@@ -27,31 +27,33 @@ public partial class Discoball : Node {
         _configWindow.MoveToForeground();
         _configWindow.GrabFocus();
     }
+
 // 120   0.36    44
     public override void _PhysicsProcess(double delta) {
         if (_uiMode) return;
         _totalDelta += delta;
         var targetDelta = 60.0 / DiscoConfig.CurrentConfig.Bpm;
         if (_totalDelta < targetDelta) {
-            var curvedDelta = _curve.Sample((float)_totalDelta);
+            var relativeDelta = _totalDelta / targetDelta;
+            var curvedDelta = _curve.Sample((float)relativeDelta);
             var currentRectPosition = Tween.InterpolateValue(
                 -_rectOffset,
-                _rectOffset*2 + _rectHeight,
+                _rectOffset * 2 + _rectHeight,
                 curvedDelta,
                 // _totalDelta,
-                DiscoConfig.CurrentConfig.AnimationDuration, 
-                Tween.TransitionType.Linear, 
+                DiscoConfig.CurrentConfig.AnimationDuration,
+                Tween.TransitionType.Linear,
                 Tween.EaseType.InOut);
 
             _rect.Position = new Vector2(_rect.Position.X, (float)currentRectPosition);
         } else {
             _totalDelta -= targetDelta;
-            
+
             _rect.SetRandomColor();
             var circleHeight = _circle.Texture.GetHeight();
             _rectHeight = circleHeight / 100.0f * DiscoConfig.CurrentConfig.BarHeight;
             _rect.Scale = new Vector2(_rect.Scale.X, _rectHeight);
-            _rectOffset = circleHeight/2.0f + _rectHeight/2.0f;
+            _rectOffset = circleHeight / 2.0f + _rectHeight / 2.0f;
             _rect.Position = new Vector2(_rect.Position.X, -_rectOffset);
         }
     }
