@@ -16,6 +16,7 @@ public partial class Discoball : Node {
     private double _totalDelta;
     private float _rectOffset;
     private float _rectHeight;
+    private double _animationDuration;
 
     public override void _Ready() {
         GetViewport().TransparentBg = true;
@@ -28,20 +29,18 @@ public partial class Discoball : Node {
         _configWindow.GrabFocus();
     }
 
-// 120   0.36    44
     public override void _PhysicsProcess(double delta) {
         if (_uiMode) return;
         _totalDelta += delta;
         var targetDelta = 60.0 / DiscoConfig.CurrentConfig.Bpm;
         if (_totalDelta < targetDelta) {
-            var relativeDelta = _totalDelta / targetDelta;
-            var curvedDelta = _curve.Sample((float)relativeDelta);
+            var progress = _totalDelta / _animationDuration;
+            var adjustedProgress = _curve.Sample((float)progress);
             var currentRectPosition = Tween.InterpolateValue(
                 -_rectOffset,
                 _rectOffset * 2 + _rectHeight,
-                curvedDelta,
-                // _totalDelta,
-                DiscoConfig.CurrentConfig.AnimationDuration,
+                adjustedProgress * _animationDuration,
+                _animationDuration,
                 Tween.TransitionType.Linear,
                 Tween.EaseType.InOut);
 
@@ -55,6 +54,7 @@ public partial class Discoball : Node {
             _rect.Scale = new Vector2(_rect.Scale.X, _rectHeight);
             _rectOffset = circleHeight / 2.0f + _rectHeight / 2.0f;
             _rect.Position = new Vector2(_rect.Position.X, -_rectOffset);
+            _animationDuration = DiscoConfig.CurrentConfig.AnimationDuration;
         }
     }
 
