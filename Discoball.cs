@@ -17,6 +17,7 @@ public partial class Discoball : Node {
     private float _rectOffset;
     private float _rectHeight;
     private double _animationDuration;
+    private int _midiClocks;
 
     public override void _Ready() {
         GetViewport().TransparentBg = true;
@@ -29,38 +30,43 @@ public partial class Discoball : Node {
         _configWindow.GrabFocus();
     }
 
-    public override void _PhysicsProcess(double delta) {
+    public override void _Process(double delta) {
         if (_uiMode) return;
+
         _totalDelta += delta;
-        var targetDelta = 60.0 / DiscoConfig.CurrentConfig.Bpm;
-        if (_totalDelta < targetDelta) {
-            var progress = _totalDelta / _animationDuration;
-            var adjustedProgress = _curve.Sample((float)progress);
-            var currentRectPosition = Tween.InterpolateValue(
-                -_rectOffset,
-                _rectOffset * 2 + _rectHeight,
-                adjustedProgress * _animationDuration,
-                _animationDuration,
-                Tween.TransitionType.Linear,
-                Tween.EaseType.InOut);
-
-            _rect.Position = new Vector2(_rect.Position.X, (float)currentRectPosition);
+        
+        // TODO midi mode starts animation once immediately when UiMode is toggled off
+        // TODO white bar, when starting up bpm mode
+        if (DiscoConfig.CurrentConfig.MidiMode) {
+            Animate(_totalDelta, _animationDuration);
         } else {
-            _totalDelta -= targetDelta;
-
-            _rect.SetRandomColor();
-            var circleHeight = _circle.Texture.GetHeight();
-            _rectHeight = circleHeight / 100.0f * DiscoConfig.CurrentConfig.BarHeight;
-            _rect.Scale = new Vector2(_rect.Scale.X, _rectHeight);
-            _rectOffset = circleHeight / 2.0f + _rectHeight / 2.0f;
-            _rect.Position = new Vector2(_rect.Position.X, -_rectOffset);
-            _animationDuration = DiscoConfig.CurrentConfig.AnimationDuration;
+            var targetDelta = 60.0 / DiscoConfig.CurrentConfig.Bpm;
+            if (_totalDelta >= targetDelta) {
+                _totalDelta %= targetDelta;
+                InitAnimation();
+            } else {
+                Animate(_totalDelta, _animationDuration);
+            }
         }
     }
 
     public override void _Input(InputEvent ev) {
         if (ev.IsActionPressed("Quit")) {
             GetTree().Quit();
+        }
+        // TODO test if midi stuff actually works
+        if (DiscoConfig.CurrentConfig.MidiMode && ev is InputEventMidi { Message: MidiMessage.TimingClock }) {
+            _midiClocks++;
+            if (_midiClocks > 24) {
+                _midiClocks -= 24;
+                _totalDelta = 0;
+                InitAnimation();
+            }
+        }
+        if (ev.IsActionPressed("TestButton")) {
+            if (_uiMode && !DiscoConfig.CurrentConfig.MidiMode) return;
+            _totalDelta = 0;
+            InitAnimation();
         }
         if (ev.IsActionPressed("UiMode")) {
             _uiMode = !_uiMode;
@@ -73,6 +79,30 @@ public partial class Discoball : Node {
                 _circle.SelfModulate = Colors.Black;
             }
         }
+    }
+
+    private void Animate(double animationDelta, double animationDuration) {
+        var progress = animationDelta / animationDuration;
+        var adjustedProgress = _curve.Sample((float)progress);
+        var currentRectPosition = Tween.InterpolateValue(
+            -_rectOffset,
+            _rectOffset * 2 + _rectHeight,
+            adjustedProgress * animationDuration,
+            animationDuration,
+            Tween.TransitionType.Linear,
+            Tween.EaseType.InOut);
+
+        _rect.Position = new Vector2(_rect.Position.X, (float)currentRectPosition);
+    }
+
+    private void InitAnimation() {
+        _rect.SetRandomColor();
+        var circleHeight = _circle.Texture.GetHeight();
+        _rectHeight = circleHeight / 100.0f * DiscoConfig.CurrentConfig.BarHeight;
+        _rect.Scale = new Vector2(_rect.Scale.X, _rectHeight);
+        _rectOffset = circleHeight / 2.0f + _rectHeight / 2.0f;
+        _rect.Position = new Vector2(_rect.Position.X, -_rectOffset);
+        _animationDuration = DiscoConfig.CurrentConfig.AnimationDuration;
     }
 
 }

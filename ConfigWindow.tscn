@@ -1,6 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://g5hj1vnp3yvq"]
+[gd_scene load_steps=7 format=3 uid="uid://g5hj1vnp3yvq"]
 
 [ext_resource type="Script" path="res://ConfigWindow.cs" id="1_l3xyh"]
+[ext_resource type="Script" path="res://MidiModeToggle.cs" id="2_oo1fq"]
 [ext_resource type="Script" path="res://BpmSelector.cs" id="2_q1p1b"]
 [ext_resource type="Script" path="res://AnimationDurationSelector.cs" id="3_h840v"]
 [ext_resource type="Script" path="res://BarHeightSelector.cs" id="4_hl2ha"]
@@ -9,7 +10,7 @@
 [node name="ConfigWindow" type="Window"]
 title = "Discoball Config"
 position = Vector2i(0, 36)
-size = Vector2i(400, 150)
+size = Vector2i(500, 300)
 wrap_controls = true
 transient = true
 script = ExtResource("1_l3xyh")
@@ -17,8 +18,8 @@ script = ExtResource("1_l3xyh")
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="V" type="VBoxContainer" parent="CanvasLayer"]
-offset_right = 40.0
-offset_bottom = 40.0
+offset_right = 353.0
+offset_bottom = 167.0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/V"]
 layout_mode = 2
@@ -27,16 +28,31 @@ layout_mode = 2
 layout_mode = 2
 columns = 3
 
+[node name="MidiMode" type="Label" parent="CanvasLayer/V/GridContainer"]
+layout_mode = 2
+text = "Mode"
+
+[node name="MidiModeToggle" type="CheckButton" parent="CanvasLayer/V/GridContainer"]
+layout_mode = 2
+text = "BPM"
+script = ExtResource("2_oo1fq")
+
+[node name="EmptyLabel" type="Label" parent="CanvasLayer/V/GridContainer"]
+layout_mode = 2
+text = "MIDI"
+
 [node name="BPM" type="Label" parent="CanvasLayer/V/GridContainer"]
 layout_mode = 2
 text = "BPM"
 
 [node name="BpmSelector" type="SpinBox" parent="CanvasLayer/V/GridContainer"]
 layout_mode = 2
+min_value = 1.0
 max_value = 480.0
+value = 1.0
 script = ExtResource("2_q1p1b")
 
-[node name="EmptyLabel" type="Label" parent="CanvasLayer/V/GridContainer"]
+[node name="EmptyLabel2" type="Label" parent="CanvasLayer/V/GridContainer"]
 layout_mode = 2
 
 [node name="AnimDur" type="Label" parent="CanvasLayer/V/GridContainer"]
@@ -59,6 +75,8 @@ text = "Bar Height"
 
 [node name="BarHeightSelector" type="SpinBox" parent="CanvasLayer/V/GridContainer"]
 layout_mode = 2
+min_value = 1.0
+value = 1.0
 script = ExtResource("4_hl2ha")
 
 [node name="ofCircle" type="Label" parent="CanvasLayer/V/GridContainer"]
@@ -72,6 +90,7 @@ text = "!! Animation Duration to long for BPM"
 script = ExtResource("5_qay8u")
 
 [connection signal="close_requested" from="." to="." method="_OnCloseRequested"]
+[connection signal="toggled" from="CanvasLayer/V/GridContainer/MidiModeToggle" to="CanvasLayer/V/GridContainer/MidiModeToggle" method="_OnToggled"]
 [connection signal="value_changed" from="CanvasLayer/V/GridContainer/BpmSelector" to="CanvasLayer/V/GridContainer/BpmSelector" method="_OnValueChanged"]
 [connection signal="value_changed" from="CanvasLayer/V/GridContainer/AnimationDuration" to="CanvasLayer/V/GridContainer/AnimationDuration" method="_OnValueChanged"]
 [connection signal="value_changed" from="CanvasLayer/V/GridContainer/BarHeightSelector" to="CanvasLayer/V/GridContainer/BarHeightSelector" method="_OnValueChanged"]

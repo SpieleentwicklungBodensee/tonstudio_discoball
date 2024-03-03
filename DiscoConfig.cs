@@ -12,6 +12,8 @@ public partial class DiscoConfig : Resource {
     [Export] public Vector2I WindowSize = new(353, 353);
     [Export] public int Screen;
     
+    [Export] public bool MidiMode = true;
+    
     [Export] public int Bpm = 120;
     [Export] public double AnimationDuration = .8;
     [Export] public int BarHeight = 25;
