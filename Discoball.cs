@@ -28,6 +28,7 @@ public partial class Discoball : Node {
         _configWindow.Visible = true;
         _configWindow.MoveToForeground();
         _configWindow.GrabFocus();
+        OS.OpenMidiInputs();
     }
 
     public override void _Process(double delta) {
