@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://g5hj1vnp3yvq"]
+[gd_scene load_steps=8 format=3 uid="uid://g5hj1vnp3yvq"]
 
 [ext_resource type="Script" path="res://ConfigWindow.cs" id="1_l3xyh"]
 [ext_resource type="Script" path="res://MidiModeToggle.cs" id="2_oo1fq"]
@@ -6,11 +6,12 @@
 [ext_resource type="Script" path="res://AnimationDurationSelector.cs" id="3_h840v"]
 [ext_resource type="Script" path="res://BarHeightSelector.cs" id="4_hl2ha"]
 [ext_resource type="Script" path="res://Warning.cs" id="5_qay8u"]
+[ext_resource type="Script" path="res://AnimationOffsetSelector.cs" id="6_0rssd"]
 
 [node name="ConfigWindow" type="Window"]
 title = "Discoball Config"
 position = Vector2i(0, 36)
-size = Vector2i(500, 300)
+size = Vector2i(600, 300)
 wrap_controls = true
 transient = true
 script = ExtResource("1_l3xyh")
@@ -18,8 +19,8 @@ script = ExtResource("1_l3xyh")
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="V" type="VBoxContainer" parent="CanvasLayer"]
-offset_right = 353.0
-offset_bottom = 167.0
+offset_right = 352.0
+offset_bottom = 152.0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/V"]
 layout_mode = 2
@@ -89,8 +90,83 @@ theme_override_colors/font_color = Color(1, 1, 0, 1)
 text = "!! Animation Duration to long for BPM"
 script = ExtResource("5_qay8u")
 
+[node name="AnimationOffset" type="VBoxContainer" parent="CanvasLayer/V"]
+layout_mode = 2
+script = ExtResource("6_0rssd")
+
+[node name="Label" type="Label" parent="CanvasLayer/V/AnimationOffset"]
+layout_mode = 2
+size_flags_vertical = 0
+text = "Animation Preplay Offset"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/V/AnimationOffset"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="V" type="VBoxContainer" parent="CanvasLayer/V/AnimationOffset/HBoxContainer"]
+layout_mode = 2
+
+[node name="H_Slider" type="HBoxContainer" parent="CanvasLayer/V/AnimationOffset/HBoxContainer/V"]
+layout_mode = 2
+
+[node name="HSlider" type="HSlider" parent="CanvasLayer/V/AnimationOffset/HBoxContainer/V/H_Slider"]
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+max_value = 24.0
+tick_count = 25
+ticks_on_borders = true
+
+[node name="H" type="HBoxContainer" parent="CanvasLayer/V/AnimationOffset/HBoxContainer/V"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/V/AnimationOffset/HBoxContainer/V/H"]
+layout_mode = 2
+text = " 0
+"
+
+[node name="Spacer" type="Control" parent="CanvasLayer/V/AnimationOffset/HBoxContainer/V/H"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label2" type="Label" parent="CanvasLayer/V/AnimationOffset/HBoxContainer/V/H"]
+layout_mode = 2
+text = "0.25"
+horizontal_alignment = 1
+
+[node name="Spacer2" type="Control" parent="CanvasLayer/V/AnimationOffset/HBoxContainer/V/H"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label3" type="Label" parent="CanvasLayer/V/AnimationOffset/HBoxContainer/V/H"]
+layout_mode = 2
+text = "0.5
+"
+horizontal_alignment = 1
+
+[node name="Spacer3" type="Control" parent="CanvasLayer/V/AnimationOffset/HBoxContainer/V/H"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label4" type="Label" parent="CanvasLayer/V/AnimationOffset/HBoxContainer/V/H"]
+layout_mode = 2
+text = "0.75"
+horizontal_alignment = 1
+
+[node name="Spacer4" type="Control" parent="CanvasLayer/V/AnimationOffset/HBoxContainer/V/H"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label5" type="Label" parent="CanvasLayer/V/AnimationOffset/HBoxContainer/V/H"]
+layout_mode = 2
+text = "1"
+horizontal_alignment = 1
+
+[node name="OffsetDisplay" type="Label" parent="CanvasLayer/V/AnimationOffset/HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+text = "0.774"
+
 [connection signal="close_requested" from="." to="." method="_OnCloseRequested"]
-[connection signal="toggled" from="CanvasLayer/V/GridContainer/MidiModeToggle" to="CanvasLayer/V/GridContainer/MidiModeToggle" method="_OnToggled"]
 [connection signal="value_changed" from="CanvasLayer/V/GridContainer/BpmSelector" to="CanvasLayer/V/GridContainer/BpmSelector" method="_OnValueChanged"]
 [connection signal="value_changed" from="CanvasLayer/V/GridContainer/AnimationDuration" to="CanvasLayer/V/GridContainer/AnimationDuration" method="_OnValueChanged"]
 [connection signal="value_changed" from="CanvasLayer/V/GridContainer/BarHeightSelector" to="CanvasLayer/V/GridContainer/BarHeightSelector" method="_OnValueChanged"]

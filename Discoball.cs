@@ -35,7 +35,7 @@ public partial class Discoball : Node {
         if (_uiMode) return;
 
         _totalDelta += delta;
-        
+
         // TODO midi mode starts animation once immediately when UiMode is toggled off
         // TODO white bar, when starting up bpm mode
         if (DiscoConfig.CurrentConfig.MidiMode) {
@@ -55,7 +55,6 @@ public partial class Discoball : Node {
         if (ev.IsActionPressed("Quit")) {
             GetTree().Quit();
         }
-        // TODO test if midi stuff actually works
         if (DiscoConfig.CurrentConfig.MidiMode && ev is InputEventMidi { Message: MidiMessage.TimingClock }) {
             _midiClocks++;
             if (_midiClocks > 24) {
