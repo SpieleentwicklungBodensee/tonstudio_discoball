@@ -55,6 +55,9 @@ public partial class Discoball : Node {
         if (ev.IsActionPressed("Quit")) {
             GetTree().Quit();
         }
+        if (DiscoConfig.CurrentConfig.MidiMode && ev is InputEventMidi { Message: MidiMessage.Start }) {
+            _midiClocks = 0;
+        }
         if (DiscoConfig.CurrentConfig.MidiMode && ev is InputEventMidi { Message: MidiMessage.TimingClock }) {
             _midiClocks++;
             if (_midiClocks > 24) {
