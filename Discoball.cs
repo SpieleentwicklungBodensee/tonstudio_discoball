@@ -13,11 +13,14 @@ public partial class Discoball : Node {
     private ConfigWindow _configWindow;
 
     private bool _uiMode = true;
-    private double _totalDelta;
+    private bool _animationPlaying;
+    private double _animationDelta;
+    private double _animationTimingDelta;
     private float _rectOffset;
     private float _rectHeight;
     private double _animationDuration;
     private int _midiClocks;
+    private bool _midiAnimationTriggered;
 
     public override void _Ready() {
         GetViewport().TransparentBg = true;
@@ -29,27 +32,31 @@ public partial class Discoball : Node {
         _configWindow.MoveToForeground();
         _configWindow.GrabFocus();
         OS.OpenMidiInputs();
+        Console.WriteLine("midi:");
+        foreach (var connectedMidiInput in OS.GetConnectedMidiInputs()) {
+            Console.WriteLine(connectedMidiInput);
+        }
     }
 
     public override void _Process(double delta) {
         if (_uiMode) return;
 
-        _totalDelta += delta;
 
-        // TODO midi mode starts animation once immediately when UiMode is toggled off
-        // TODO white bar, when starting up bpm mode
-        if (DiscoConfig.CurrentConfig.MidiMode) {
-            Animate(_totalDelta, _animationDuration);
+        if (_animationPlaying) {
+            Animate(delta, _animationDuration);
         } else {
+            if (DiscoConfig.CurrentConfig.MidiMode) return;
+
+            _animationTimingDelta += delta;
             var targetDelta = 60.0 / DiscoConfig.CurrentConfig.Bpm;
-            if (_totalDelta >= targetDelta) {
-                _totalDelta %= targetDelta;
+            if (_animationTimingDelta >= targetDelta) {
+                _animationTimingDelta %= targetDelta;
                 InitAnimation();
-            } else {
-                Animate(_totalDelta, _animationDuration);
             }
         }
     }
+
+    private ulong _lastMidiTs;
 
     public override void _Input(InputEvent ev) {
         if (ev.IsActionPressed("Quit")) {
@@ -57,18 +64,21 @@ public partial class Discoball : Node {
         }
         if (DiscoConfig.CurrentConfig.MidiMode && ev is InputEventMidi { Message: MidiMessage.Start }) {
             _midiClocks = 0;
+            _midiAnimationTriggered = false;
         }
         if (DiscoConfig.CurrentConfig.MidiMode && ev is InputEventMidi { Message: MidiMessage.TimingClock }) {
             _midiClocks++;
-            if (_midiClocks > 24) {
+            if (_midiClocks >= 24) {
                 _midiClocks -= 24;
-                _totalDelta = 0;
+                _midiAnimationTriggered = false;
+            }
+            if (_midiClocks >= (24 - DiscoConfig.CurrentConfig.AnimationOffset) % 24 && !_midiAnimationTriggered) {
+                _midiAnimationTriggered = true;
                 InitAnimation();
             }
         }
         if (ev.IsActionPressed("TestButton")) {
             if (_uiMode && !DiscoConfig.CurrentConfig.MidiMode) return;
-            _totalDelta = 0;
             InitAnimation();
         }
         if (ev.IsActionPressed("UiMode")) {
@@ -76,7 +86,7 @@ public partial class Discoball : Node {
             _ui.Visible = _uiMode;
             if (_uiMode) {
                 _circle.SelfModulate = Colors.White;
-                _totalDelta = 0;
+                _animationTimingDelta = 0;
                 _configWindow.Show();
             } else {
                 _circle.SelfModulate = Colors.Black;
@@ -84,8 +94,9 @@ public partial class Discoball : Node {
         }
     }
 
-    private void Animate(double animationDelta, double animationDuration) {
-        var progress = animationDelta / animationDuration;
+    private void Animate(double delta, double animationDuration) {
+        _animationDelta += delta;
+        var progress = _animationDelta / animationDuration;
         var adjustedProgress = _curve.Sample((float)progress);
         var currentRectPosition = Tween.InterpolateValue(
             -_rectOffset,
@@ -96,6 +107,11 @@ public partial class Discoball : Node {
             Tween.EaseType.InOut);
 
         _rect.Position = new Vector2(_rect.Position.X, (float)currentRectPosition);
+
+        if (_animationDelta > animationDuration) {
+            _animationPlaying = false;
+            _animationDelta = 0;
+        }
     }
 
     private void InitAnimation() {
@@ -106,6 +122,8 @@ public partial class Discoball : Node {
         _rectOffset = circleHeight / 2.0f + _rectHeight / 2.0f;
         _rect.Position = new Vector2(_rect.Position.X, -_rectOffset);
         _animationDuration = DiscoConfig.CurrentConfig.AnimationDuration;
+        _animationPlaying = true;
+        _animationDelta = 0;
     }
 
 }
