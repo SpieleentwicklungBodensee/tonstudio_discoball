@@ -12,13 +12,12 @@ public partial class AnimationOffsetSelector : Control {
         _slider = GetNode<HSlider>("HBoxContainer/V/H_Slider/HSlider");
         _display = GetNode<Label>("HBoxContainer/OffsetDisplay");
 
-        DisplayValue();
         _slider.ValueChanged += value => {
-            Console.WriteLine(value);
             DiscoConfig.CurrentConfig.AnimationOffset = (int)value;
             SaveSystem.Save();
             DisplayValue();
         };
+        _slider.Value = DiscoConfig.CurrentConfig.AnimationOffset;
     }
 
     private void DisplayValue() {
